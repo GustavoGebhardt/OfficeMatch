@@ -8,10 +8,6 @@ blablablablablabla
 
 Importe o [Banco de Dados](officematch.sql) usando o phpmyadmin
 
-```bash
-officematch.sql
-```
-
 Carregue os arquivos do autoload
 
 ```bash

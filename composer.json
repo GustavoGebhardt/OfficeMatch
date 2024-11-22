@@ -1,0 +1,15 @@
+{
+    "name": "gustavogebhardt/office-match",
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "GustavoGebhardt",
+            "email": "gustavorgebhardt@gmail.com"
+        }
+    ],
+    "require": {}
+}
