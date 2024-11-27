@@ -9,33 +9,25 @@
 <body>
     <header>
         <a class="titulo" href="./">OfficeMatch.</a>
-        <a class="link-avaliar" href="./avaliar.php">Avaliar</a>
+        <a class="link-avaliar" href="./">Ranking</a>
         <p class="text-user">Usuario</p>
     </header>
     <main>
-        <div class="ranking">
-            <img src="./public/temp.png">
-            <p>Gustavo Gebhardt</p>
-            <div class="stars">
-                <img src="./public/estrela-true.png">
-                <img src="./public/estrela-true.png">
-                <img src="./public/estrela-true.png">
-                <img src="./public/estrela-false.png">
-                <img src="./public/estrela-false.png">
+        <div class="div-funcionario">
+            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+            <div class="funcionario">
+                <img src="./public/temp.png">
+                <p class="titulo">Gustavo Gebhardt</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <div class="stars">
+                    <img src="./public/estrela-false.png">
+                    <img src="./public/estrela-false.png">
+                    <img src="./public/estrela-false.png">
+                    <img src="./public/estrela-false.png">
+                    <img src="./public/estrela-false.png">
+                </div>
             </div>
-            <p>(10)</p>
-        </div>
-        <div class="ranking">
-            <img src="./public/temp.png">
-            <p>Gustavo Gebhardt</p>
-            <div class="stars">
-                <img src="./public/estrela-true.png">
-                <img src="./public/estrela-true.png">
-                <img src="./public/estrela-true.png">
-                <img src="./public/estrela-false.png">
-                <img src="./public/estrela-false.png">
-            </div>
-            <p>(10)</p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </div>
     </main>
 </body>
@@ -98,29 +90,43 @@
     }
 
     main {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding-top: 40px;
+        padding-top: 100px;
     }
 
-    main .ranking {
+    main .div-funcionario{
+        display: flex;
+        align-items: center;
+    }
+
+    main .div-funcionario svg{
+        margin: 30px;
+    }
+
+    main .div-funcionario .funcionario {
         width: 100vw;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 15px;
+        color: #000158;
     }
 
-    main .ranking img {
-        width: 50px;
+    main .div-funcionario .funcionario .titulo {
+        font-weight: 500;
+        font-style: normal;
+        font-size: 25px;
     }
 
-    main .ranking .stars {
+    main .div-funcionario .funcionario img {
+        width: 200px;
+    }
+
+    main .div-funcionario .funcionario .stars {
         display: flex;
     }
 
-    main .ranking .stars img {
+    main .div-funcionario .funcionario .stars img {
         width: 30px;
         height: 30px;
     }
