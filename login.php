@@ -1,5 +1,59 @@
+<?php
+    if(isset($_POST)){
+        require_once __DIR__ . '/vendor/autoload.php';
+
+        if(isset($_POST['email']) && isset($_POST['password'])){
+            $user = User::findWithEmail($_POST['email']);
+            if(!$user || $user->getSenha() != $_POST['password']){
+                echo "<style>
+                        .popup {
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background-color: white;
+                            border-radius: 8px;
+                            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                            width: 300px;
+                            padding: 20px;
+                            text-align: center;
+                            z-index: 1000;
+                            display: block; /* Inicialmente oculto */
+                        }
+
+                        .popup button {
+                            background-color: #000158;
+                            color: white;
+                            border: none;
+                            border-radius: 4px;
+                            padding: 10px 20px;
+                            cursor: pointer;
+                            font-size: 16px;
+                        }
+                    </style>
+                    <div class='popup' id='popup'>
+                        <p>Usuario ou senha incorretos. Por favor tente novamente!</p>
+                        <button onclick='closePopup()'>OK</button>
+                    </div>
+                    <script>
+                        function closePopup() {
+                            document.getElementById('popup').style.display = 'none';
+                            document.getElementById('overlay').style.display = 'none';
+                        }
+                    </script>";
+            } else {
+                session_start();
+
+                $_SESSION['name'] = $user->getNome();
+    
+                header("location: avaliar.php");
+            }
+        }
+    }
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,12 +68,12 @@
             <h1 class="poppins-semibold">Office Match.</h1>
         </div>
         <div class="div-form">
-            <form action="">
+            <form action="login.php" method="POST">
                 <label class="poppins-semibold">Email</label>
-                <input type="email" placeholder="Informe seu email">
+                <input type="email" name="email" placeholder="Informe seu email" require>
 
                 <label class="poppins-semibold">Senha</label>
-                <input type="password" placeholder="Informe sua senha">
+                <input type="password" name="password" placeholder="Informe sua senha" require>
 
                 <button class="btnSubmit poppins-semibold" type="submit">Entrar</button>
 
@@ -108,7 +162,7 @@
         width: 100%;
         height: 40px;
         border: 2px solid #000158;
-        border-radius: 3px;
+        border-radius: 7px;
         margin-bottom: 1    0px;
         padding: 4px;
 
@@ -116,7 +170,7 @@
     .btnSubmit {
         background-color: #000158;
         color: white;
-        border-radius: 50px;
+        border-radius: 10px;
         width: 100px;
         height: 30px;
         margin-top: 20px;

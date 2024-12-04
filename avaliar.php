@@ -1,3 +1,15 @@
+<?php
+    session_start();
+
+    if (!isset($_SESSION['name'])) {
+        header("location: login.php");
+    }
+
+    require_once __DIR__ . '/vendor/autoload.php';
+
+    $funcionarios = Funcionario::findall();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,24 +22,31 @@
     <header>
         <a class="titulo" href="./">OfficeMatch.</a>
         <a class="link-avaliar" href="./">Ranking</a>
-        <p class="text-user">Usuario</p>
+        <?php echo "<a href='./logout.php' class='text-user'>Bem vindo, {$_SESSION['name']}!</a>" ?>
     </header>
     <main>
-        <div class="div-funcionario">
-            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-            <div class="funcionario">
-                <img src="./public/temp.png">
-                <p class="titulo">Gustavo Gebhardt</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                <div class="stars">
-                    <img src="./public/estrela-false.png">
-                    <img src="./public/estrela-false.png">
-                    <img src="./public/estrela-false.png">
-                    <img src="./public/estrela-false.png">
-                    <img src="./public/estrela-false.png">
-                </div>
-            </div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        <div class="carrossel">
+            <?php foreach($funcionarios as $funcionario) {
+                echo
+                    "<div class='carrossel-item ativo'>
+                        <div class='div-funcionario'>
+                            <svg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-arrow-left prev'><path d='m12 19-7-7 7-7'/><path d='M19 12H5'/></svg>
+                            <div class='funcionario'>
+                                <img src='". $funcionario->getImagem() ."' class='image-funcionario'>
+                                <p class='titulo'>". $funcionario->getNome() ."</p>
+                                <p>". $funcionario->getDescricao() ."</p>
+                                <div class='stars'>
+                                    <img src='./public/estrela-false.png'>
+                                    <img src='./public/estrela-false.png'>
+                                    <img src='./public/estrela-false.png'>
+                                    <img src='./public/estrela-false.png'>
+                                    <img src='./public/estrela-false.png'>
+                                </div>
+                            </div>
+                            <svg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-arrow-right next'><path d='M5 12H14'/><path d='m12 5 7 7-7 7'/></svg>
+                        </div>
+                    </div>";
+            }?>
         </div>
     </main>
 </body>
@@ -73,24 +92,18 @@
     }
 
     header .text-user {
+        width: 200px;
         padding: 10px;
         border-radius: 7px;
         text-align: center;
         color: #000158;
-        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-
-    header .text-user:after{
-        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-
-    header .text-user:hover{
-        background-color: red;
-        color: black;
+        text-decoration: none;
     }
 
     main {
         padding-top: 100px;
+        user-select: none;
+        
     }
 
     main .div-funcionario{
@@ -130,4 +143,62 @@
         width: 30px;
         height: 30px;
     }
+
+    .carrossel {
+        display: flex;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .carrossel-item {
+        flex-shrink: 0;
+        width: 100%;
+        display: none;
+    }
+
+    .carrossel-item.ativo {
+        display: block;
+    }
+
+    .prev, .next {
+        cursor: pointer;
+    }
+
+    .image-funcionario{
+        width: 200px;   /* Largura fixa */
+        height: 200px;  /* Altura fixa */
+        object-fit: cover;
+        border-radius: 100%;
+    }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const carrosselItems = document.querySelectorAll(".carrossel-item");
+        const prevButtons = document.querySelectorAll(".prev");
+        const nextButtons = document.querySelectorAll(".next");
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            carrosselItems.forEach((item, i) => {
+                item.classList.toggle("ativo", i === index);
+            });
+        }
+
+        prevButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : carrosselItems.length - 1;
+                showSlide(currentIndex);
+            });
+        });
+
+        nextButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                currentIndex = (currentIndex < carrosselItems.length - 1) ? currentIndex + 1 : 0;
+                showSlide(currentIndex);
+            });
+        });
+
+        showSlide(currentIndex);
+    });
+</script>

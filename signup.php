@@ -1,5 +1,22 @@
+<?php    
+    if(isset($_POST)){
+        require_once __DIR__ . '/vendor/autoload.php';
+
+        if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])){
+            $user = new User($_POST['name'],$_POST['password'],$_POST['email']);
+            $user->save();
+
+            session_start();
+
+            $_SESSION['name'] = $user->getNome();
+
+            header("location: avaliar.php");
+        }
+    }
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,15 +32,15 @@
             <h1 class="poppins-semibold">Office Match.</h1>
         </div>
         <div class="div-form">
-            <form action="">
-                <label class="poppins-semibold">Usuário</label>
-                <input type="text" placeholder="Crie um nome de usuário">
+            <form action="signup.php" method="POST">
+                <label class="poppins-semibold">Nome</label>
+                <input type="text" name="name" placeholder="Digite seu nome" require>
 
                 <label class="poppins-semibold">Email</label>
-                <input type="email" placeholder="Email">
+                <input type="email" name="email" placeholder="Email" require>
 
                 <label class="poppins-semibold">Senha</label>
-                <input type="password" placeholder="Senha">
+                <input type="password" name="password" placeholder="Senha" require>
 
                 <button class="btnSubmit poppins-semibold" type="submit">Criar Conta</button>
                 <div class="account-already">
@@ -112,7 +129,7 @@
         width: 100%;
         height: 40px;
         border: 2px solid #000158;
-        border-radius: 3px;
+        border-radius: 7px;
         margin-bottom: 1    0px;
         padding: 4px;
 
@@ -120,7 +137,7 @@
     .btnSubmit {
         background-color: #000158;
         color: white;
-        border-radius: 50px;
+        border-radius: 10px;
         width: 100px;
         height: 30px;
         margin-top: 20px;

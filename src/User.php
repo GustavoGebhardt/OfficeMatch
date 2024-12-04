@@ -63,6 +63,19 @@ class User implements ActiveRecord{
         $f->setIdUser($resultado[0]['id']);
         return $f;
     }
+
+    public static function findWithEmail($email): ?User{
+        $conexao = new MySQL();
+        $sql = "SELECT * FROM User WHERE email = '{$email}'";
+        $resultado = $conexao->consulta($sql);
+        if($resultado){
+            $f = new User($resultado[0]['nome'],$resultado[0]['senha'],$resultado[0]['email']);
+            $f->setIdUser($resultado[0]['id']);
+            return $f;
+        } else {
+            return null;
+        }
+    }
     public static function findall():array{
         $conexao = new MySQL();
         $sql = "SELECT * FROM User";

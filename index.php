@@ -1,3 +1,7 @@
+<?php
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,7 +14,13 @@
     <header>
         <a class="titulo" href="./">OfficeMatch.</a>
         <a class="link-avaliar" href="./avaliar.php">Avaliar</a>
-        <p class="text-user">Usuario</p>
+        <?php 
+            if (isset($_SESSION['name'])) {
+                echo "<a href='./logout.php' class='text-user'>Bem vindo, {$_SESSION['name']}!</a>";
+            } else {
+                echo "<a href='./login.php' class='text-user'>Login</a>";
+            }
+        ?>
     </header>
     <main>
         <div class="ranking">
@@ -81,20 +91,12 @@
     }
 
     header .text-user {
+        width: 200px;
         padding: 10px;
         border-radius: 7px;
         text-align: center;
         color: #000158;
-        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-
-    header .text-user:after{
-        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-
-    header .text-user:hover{
-        background-color: red;
-        color: black;
+        text-decoration: none;
     }
 
     main {
