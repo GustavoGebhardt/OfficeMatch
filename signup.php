@@ -1,4 +1,11 @@
-<?php    
+<?php
+
+    session_start();
+
+    if (isset($_SESSION['id'])) {
+        header("location: ranking.php");
+    }
+
     if(isset($_POST)){
         require_once __DIR__ . '/vendor/autoload.php';
 
@@ -6,11 +13,7 @@
             $user = new User($_POST['name'],$_POST['password'],$_POST['email']);
             $user->save();
 
-            session_start();
-
-            $_SESSION['name'] = $user->getNome();
-
-            header("location: avaliar.php");
+            header("location: index.php");
         }
     }
 ?>
@@ -45,7 +48,7 @@
                 <button class="btnSubmit poppins-semibold" type="submit">Criar Conta</button>
                 <div class="account-already">
                     <p class="p1">Já tem uma conta?</p>
-                    <a href="login.php">Fazer login</a>
+                    <a href="./">Fazer login</a>
                 </div>
 
             </form>

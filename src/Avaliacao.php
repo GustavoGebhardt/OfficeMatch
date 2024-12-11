@@ -41,10 +41,10 @@ class Avaliacao implements ActiveRecord{
 
     public function save():bool{
         $conexao = new MySQL();
-        if(isset($this->idFesta)){
+        if(isset($this->idAvaliacao)){
             $sql = "UPDATE Avaliacao SET id_user = '{$this->id_user}' ,id_funcionario = '{$this->id_funcionario}',nota = '{$this->nota}' WHERE id = {$this->idAvaliacao}";
         }else{
-            $sql = "INSERT INTO Avaliacao (id_user,id_funcionario,nota,) VALUES ('{$this->id_user}','{$this->id_funcionario}','{$this->nota}')";
+            $sql = "INSERT INTO Avaliacao (id_user,id_funcionario,nota) VALUES ('{$this->id_user}','{$this->id_funcionario}','{$this->nota}')";
         }
         return $conexao->executa($sql);
         

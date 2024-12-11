@@ -1,13 +1,30 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['name'])) {
+    require_once __DIR__ . '/vendor/autoload.php';
+
+    if (!isset($_SESSION['id'])) {
         header("location: login.php");
     }
 
-    require_once __DIR__ . '/vendor/autoload.php';
+    if(isset($_POST['nota'])){
+        echo $_POST['nota'];
+        echo $_SESSION['id'];
+        $avaliacao = new Avaliacao($_SESSION['id'],$_POST['id'],$_POST['nota']);
+        $avaliacao->save();
+        header("location: avaliar.php");
+    }
 
     $funcionarios = Funcionario::findall();
+    $avaliacoes = Avaliacao::findall();
+
+    foreach ($funcionarios as $key => $funcionario){
+        foreach ($avaliacoes as $avaliacao){
+            if($funcionario->getIdFuncionario() == $avaliacao->getIdFuncionario() && $avaliacao->getIdUser() == $_SESSION['id']){
+                unset($funcionarios[$key]);
+            }
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -26,27 +43,32 @@
     </header>
     <main>
         <div class="carrossel">
-            <?php foreach($funcionarios as $funcionario) {
-                echo
-                    "<div class='carrossel-item ativo'>
-                        <div class='div-funcionario'>
-                            <svg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-arrow-left prev'><path d='m12 19-7-7 7-7'/><path d='M19 12H5'/></svg>
-                            <div class='funcionario'>
-                                <img src='". $funcionario->getImagem() ."' class='image-funcionario'>
-                                <p class='titulo'>". $funcionario->getNome() ."</p>
-                                <p>". $funcionario->getDescricao() ."</p>
-                                <div class='stars'>
-                                    <img src='./public/estrela-false.png'>
-                                    <img src='./public/estrela-false.png'>
-                                    <img src='./public/estrela-false.png'>
-                                    <img src='./public/estrela-false.png'>
-                                    <img src='./public/estrela-false.png'>
+            <?php if (empty($funcionarios)): ?>
+                <div class="sem-funcionarios"><p>Você ja avaliou todos os funcionários.</p></div>
+            <?php else: ?>
+                <?php foreach($funcionarios as $funcionario) {
+                    echo
+                        "<div class='carrossel-item ativo'>
+                            <div class='div-funcionario'>
+                                <svg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-arrow-left prev'><path d='m12 19-7-7 7-7'/><path d='M19 12H5'/></svg>
+                                <div class='funcionario'>
+                                    <img src='". $funcionario->getImagem() ."' class='image-funcionario'>
+                                    <p class='titulo'>". $funcionario->getNome() ."</p>
+                                    <p>". $funcionario->getDescricao() ."</p>
+                                    <form class='stars' method='POST' action='avaliar.php'>
+                                        <input type='hidden' name='id' value='". $funcionario->getIdFuncionario() ."'>
+                                        <button class='buttonStar' type='submit' name='nota' value='1'><img src='./public/estrela-false.png' data-true='./public/estrela-true.png' data-false='./public/estrela-false.png' class='estrela'></button>
+                                        <button class='buttonStar' type='submit' name='nota' value='2'><img src='./public/estrela-false.png' data-true='./public/estrela-true.png' data-false='./public/estrela-false.png' class='estrela'></button>
+                                        <button class='buttonStar' type='submit' name='nota' value='3'><img src='./public/estrela-false.png' data-true='./public/estrela-true.png' data-false='./public/estrela-false.png' class='estrela'></button>
+                                        <button class='buttonStar' type='submit' name='nota' value='4'><img src='./public/estrela-false.png' data-true='./public/estrela-true.png' data-false='./public/estrela-false.png' class='estrela'></button>
+                                        <button class='buttonStar' type='submit' name='nota' value='5'><img src='./public/estrela-false.png' data-true='./public/estrela-true.png' data-false='./public/estrela-false.png' class='estrela'></button>
+                                    </form>
                                 </div>
+                                <svg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-arrow-right next'><path d='M5 12H14'/><path d='m12 5 7 7-7 7'/></svg>
                             </div>
-                            <svg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-arrow-right next'><path d='M5 12H14'/><path d='m12 5 7 7-7 7'/></svg>
-                        </div>
-                    </div>";
-            }?>
+                        </div>";
+                }?>
+            <?php endif; ?>
         </div>
     </main>
 </body>
@@ -165,11 +187,23 @@
     }
 
     .image-funcionario{
-        width: 200px;   /* Largura fixa */
-        height: 200px;  /* Altura fixa */
+        width: 200px;
+        height: 200px;
         object-fit: cover;
         border-radius: 100%;
     }
+
+    .buttonStar{
+        border: none;
+        background-color: transparent;
+    }
+
+   .sem-funcionarios{
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+   } 
 </style>
 
 <script>
@@ -201,4 +235,46 @@
 
         showSlide(currentIndex);
     });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const carrosselItems = document.querySelectorAll(".carrossel-item");
+        const prevButtons = document.querySelectorAll(".prev");
+        const nextButtons = document.querySelectorAll(".next");
+        const estrelas = document.querySelectorAll(".estrela");
+
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            carrosselItems.forEach((item, i) => {
+                item.classList.toggle("ativo", i === index);
+            });
+        }
+
+        prevButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : carrosselItems.length - 1;
+                showSlide(currentIndex);
+            });
+        });
+
+        nextButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                currentIndex = (currentIndex < carrosselItems.length - 1) ? currentIndex + 1 : 0;
+                showSlide(currentIndex);
+            });
+        });
+
+        showSlide(currentIndex);
+
+        estrelas.forEach((estrela) => {
+            estrela.addEventListener("mouseover", () => {
+                estrela.src = estrela.getAttribute("data-true");
+            });
+
+            estrela.addEventListener("mouseout", () => {
+                estrela.src = estrela.getAttribute("data-false");
+            });
+        });
+    });
+
 </script>
