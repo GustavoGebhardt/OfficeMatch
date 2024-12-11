@@ -10,10 +10,15 @@
         require_once __DIR__ . '/vendor/autoload.php';
 
         if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])){
-            $user = new User($_POST['name'],$_POST['password'],$_POST['email']);
-            $user->save();
-
-            header("location: index.php");
+            $emailParts = explode('@', $_POST['email']);
+            if (isset($emailParts[1]) && $emailParts[1] === 'aluno.feliz.ifrs.edu.br'){
+                $user = new User($_POST['name'],$_POST['password'],$_POST['email']);
+                $user->save();
+    
+                header("location: index.php");
+            } else {
+                header("location: signup.php");
+            }
         }
     }
 ?>
@@ -48,7 +53,7 @@
                 <button class="btnSubmit poppins-semibold" type="submit">Criar Conta</button>
                 <div class="account-already">
                     <p class="p1">Já tem uma conta?</p>
-                    <a href="./">Fazer login</a>
+                    <a href="index.php">Fazer login</a>
                 </div>
 
             </form>

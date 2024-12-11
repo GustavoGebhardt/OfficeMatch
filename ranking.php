@@ -16,17 +16,21 @@
     <title>Office Match</title>
 </head>
 <body>
-    <header>
-        <a class="titulo" href="./">OfficeMatch.</a>
-        <a class="link-avaliar" href="./avaliar.php">Avaliar</a>
-        <?php 
-            if (isset($_SESSION['name'])) {
-                echo "<a href='./logout.php' class='text-user'>Bem vindo, {$_SESSION['name']}!</a>";
+<header>
+    <a class="titulo" href="./">OfficeMatch.</a>
+    <?php 
+        if (isset($_SESSION['name'])) {
+            if ($_SESSION['name'] == 'admin') {
+                echo "<a class='link-avaliar' href='./dashboardAdmin.php'>Dashboard</a>";
             } else {
-                echo "<a href='./login.php' class='text-user'>Login</a>";
+                echo "<a class='link-avaliar' href='./avaliar.php'>Avaliar</a>";
             }
-        ?>
-    </header>
+            echo "<a href='./logout.php' class='text-user'>Bem vindo, {$_SESSION['name']}!</a>";
+        } else {
+            echo "<a href='./index.php' class='text-user'>Login</a>";
+        }
+    ?>
+</header>
     <main>
         <?php foreach($funcionarios as $funcionario) {
             $nota = 0;
@@ -101,14 +105,16 @@
         text-decoration: none;
     }
 
-    header .link-avaliar{
-        width: 100px;
-        padding: 10px;
+    header .link-avaliar {
+        display: inline-block;
+        padding: 10px 20px;
         color: white;
         background-color: #000158;
         text-decoration: none;
         text-align: center;
         border-radius: 7px;
+        white-space: nowrap;
+        box-sizing: border-box;
     }
 
     header .text-user {

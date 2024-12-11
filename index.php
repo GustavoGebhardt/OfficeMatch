@@ -38,7 +38,7 @@
                         }
                     </style>
                     <div class='popup' id='popup'>
-                        <p>Usuario ou senha incorretos. Por favor tente novamente!</p>
+                        <p>Usuário ou senha incorretos. Por favor, tente novamente!</p>
                         <button onclick='closePopup()'>OK</button>
                     </div>
                     <script>
@@ -52,8 +52,13 @@
 
                 $_SESSION['name'] = $user->getNome();
                 $_SESSION['id'] = $user->getIdUser();
-    
-                header("location: avaliar.php");
+                
+                
+                if ($user->getNome() == 'admin') {
+                    header("location: dashboardAdmin.php");
+                } else {
+                    header("location: avaliar.php");
+                }
             }
         }
     }
@@ -77,10 +82,10 @@
         <div class="div-form">
             <form action="index.php" method="POST">
                 <label class="poppins-semibold">Email</label>
-                <input type="email" name="email" placeholder="Informe seu email" require>
+                <input type="email" name="email" placeholder="Informe seu email" required>
 
                 <label class="poppins-semibold">Senha</label>
-                <input type="password" name="password" placeholder="Informe sua senha" require>
+                <input type="password" name="password" placeholder="Informe sua senha" required>
 
                 <button class="btnSubmit poppins-semibold" type="submit">Entrar</button>
 
@@ -125,7 +130,6 @@
         position: relative;
     }
 
-    
     .div-logo::after {
         content: "";
         position: absolute;
@@ -148,6 +152,7 @@
         flex-direction: column;
         width: 300px;
     }
+
     .div-form form label{
         color: #000158;
         font-size: 20px;
@@ -170,10 +175,10 @@
         height: 40px;
         border: 2px solid #000158;
         border-radius: 7px;
-        margin-bottom: 1    0px;
+        margin-bottom: 10px;
         padding: 4px;
-
     }
+
     .btnSubmit {
         background-color: #000158;
         color: white;
