@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 22/11/2024 às 12:34
+-- Tempo de geração: 11/12/2024 às 12:48
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `officematch`
 --
+CREATE DATABASE IF NOT EXISTS `officematch` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `officematch`;
 
 -- --------------------------------------------------------
 
@@ -44,8 +46,29 @@ CREATE TABLE `funcionario` (
   `id` int(11) NOT NULL,
   `nome` varchar(30) NOT NULL,
   `descricao` varchar(50) NOT NULL,
-  `imagem` varchar(30) NOT NULL
+  `imagem` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `funcionario`
+--
+
+INSERT INTO `funcionario` (`id`, `nome`, `descricao`, `imagem`) VALUES
+(4, 'Steve Jobs', 'Fundador e Diretor da Apple Inc.', 'public/funcionariosFotos/steveJobsjpg.jpg'),
+(5, 'Mark Zuckerberg', 'Fundador e Diretor da Meta Inc.', 'public/funcionariosFotos/mark.jpg'),
+(6, 'Bill Gates', 'Fundador e Diretor da Microsoft Inc.', 'public/funcionariosFotos/billGates.jpg'),
+(7, 'Steve Wozniak', 'Co-Fundador e Funcionario da Apple Inc.', 'public/funcionariosFotos/steveWozniak.jpg'),
+(8, 'Jeff Bezos', 'Fundador e Diretor da Amazon Inc.', 'public/funcionariosFotos/jeffBezos.png'),
+(9, 'Elon Musk', 'Fundador da Tesla Inc e SpaceX Inc.', 'public/funcionariosFotos/elonMusk.jpg'),
+(11, 'Neymar', 'Lindo perfeito jogador caro dono de um aviao', 'public/funcionariosFotos/ney.jpg'),
+(12, 'Will Smith', 'Cara brabo dos files que é funcionario de hollywoo', 'uploads/imagens/1733915368_willBrabo.jpeg'),
+(13, 'Messi', 'Melhor jogador do mundo, funcionário Inter Miami', 'uploads/imagens/1733915831_melhorDoMundo.jpeg'),
+(14, 'Faustão', 'Ex-funcionário da rede Band e Globo', 'uploads/imagens/1733915933_faustao.jpeg'),
+(15, 'Marcelo Lima Calixto', 'Diretor do IFRS Campus Feliz', 'uploads/imagens/1733916014_Marcelao.jpg'),
+(16, 'Vinicius Hartmann Ferreira', 'Melhor Professor do IFRS Campus Feliz - Programaçã', 'uploads/imagens/1733916098_ViniciusFerreira.png'),
+(17, 'ChatGPT', 'Melhor funcionario de todos os tempos, onipresente', 'uploads/imagens/1733916164_chat.png'),
+(18, 'Cleonei Cenci', 'Professor de Filosofia no IFRS Campus Feliz', 'uploads/imagens/1733916271_cleclei.jpg'),
+(19, 'Kaua da Cruz Klassmann', 'Desenvolvedor do sistema operacional klsOs', 'uploads/imagens/1733916470_klassmann.jpg');
 
 -- --------------------------------------------------------
 
@@ -57,8 +80,16 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `nome` varchar(30) NOT NULL,
   `senha` varchar(30) NOT NULL,
-  `email` varchar(30) NOT NULL
+  `email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `user`
+--
+
+INSERT INTO `user` (`id`, `nome`, `senha`, `email`) VALUES
+(10, 'admin', 'admin123', 'admin@admin'),
+(15, 'Gustavo', '123123', 'gustavo@aluno.feliz.ifrs.edu.br');
 
 --
 -- Índices para tabelas despejadas
@@ -92,19 +123,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de tabela `avaliacao`
 --
 ALTER TABLE `avaliacao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT de tabela `funcionario`
 --
 ALTER TABLE `funcionario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de tabela `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Restrições para tabelas despejadas
